@@ -161,6 +161,21 @@ BOOST_AUTO_TEST_CASE(vardecl)
 	BOOST_CHECK(successParse("{ let x := 7 }"));
 }
 
+BOOST_AUTO_TEST_CASE(vardecl_name_clashes)
+{
+	CHECK_PARSE_ERROR("{ let x := 1 let x := 2 }", DeclarationError, "Variable name x already taken in this scope.");
+}
+
+BOOST_AUTO_TEST_CASE(vardecl_multi)
+{
+	BOOST_CHECK(successParse("{ function f() -> x, y {} let x, y := f() }"));
+}
+
+BOOST_AUTO_TEST_CASE(vardecl_multi_conflict)
+{
+	CHECK_PARSE_ERROR("{ function f() -> x, y {} let x, x := f() }", DeclarationError, "Variable name x already taken in this scope.");
+}
+
 BOOST_AUTO_TEST_CASE(vardecl_bool)
 {
 	CHECK_PARSE_ERROR("{ let x := true }", ParserError, "True and false are not valid literals.");
@@ -247,6 +262,12 @@ BOOST_AUTO_TEST_CASE(name_clashes)
 BOOST_AUTO_TEST_CASE(variable_access_cross_functions)
 {
 	CHECK_PARSE_ERROR("{ let x := 2 function g() { x pop } }", DeclarationError, "Identifier not found.");
+}
+
+BOOST_AUTO_TEST_CASE(invalid_tuple_assignment)
+{
+	/// The push(42) is added here to silence the unbalanced stack error, so that there's only one error reported.
+	CHECK_PARSE_ERROR("{ 42 let x, y := 1 }", DeclarationError, "Variable count mismatch.");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
