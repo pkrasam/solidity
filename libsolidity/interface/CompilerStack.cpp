@@ -276,6 +276,26 @@ bool CompilerStack::parseAndAnalyze(std::string const& _sourceCode)
 	return parseAndAnalyze();
 }
 
+bool CompilerStack::importASTs(map<string, shared_ptr<SourceUnit>> _sources)
+{
+	if (m_stackState != Empty)
+		return false;
+	//reset stuff
+	reset();
+	for (auto& src : _sources)
+	{
+		string const& path = src.first;
+		Source source = m_sources[path];
+		source.ast = src.second;
+		//source.scanner will stay empty
+	}
+	m_stackState = SourcesSet;
+	return true;
+	//	in case not all necessary contracts are in the list,
+	//	import and parse the missing ones
+
+}
+
 vector<string> CompilerStack::contractNames() const
 {
 	if (m_stackState < AnalysisSuccessful)

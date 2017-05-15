@@ -113,6 +113,10 @@ public:
 	/// Sets the given source code as the only source unit apart from standard sources and parses and analyzes it.
 	/// @returns false on error.
 	bool parseAndAnalyze(std::string const& _sourceCode);
+
+	///imports given ASTs so they can be analyzed
+	bool importASTs(std::map<std::string, std::shared_ptr<SourceUnit>> _sources);
+
 	/// @returns a list of the contract names in the sources.
 	std::vector<std::string> contractNames() const;
 	std::string defaultContractName() const;
