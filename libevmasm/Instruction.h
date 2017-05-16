@@ -49,6 +49,8 @@ enum class Instruction: uint8_t
 	MULMOD,				///< unsigned modular multiplication
 	EXP,				///< exponential operation
 	SIGNEXTEND,			///< extend length of signed integer
+	RETURNDATASIZE = 0xd,	///< get size of the last return data
+	RETURNDATACOPY,		///< copy last return data to memory
 
 	LT = 0x10,			///< less-than comparision
 	GT,					///< greater-than comparision
