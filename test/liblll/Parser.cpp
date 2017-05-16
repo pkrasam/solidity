@@ -174,6 +174,16 @@ BOOST_AUTO_TEST_CASE(list)
 	BOOST_CHECK(!successParse("()"));
 }
 
+BOOST_AUTO_TEST_CASE(returndatacopy)
+{
+	BOOST_CHECK(successParse("( returndatacopy 0 1 2 )"));
+}
+
+BOOST_AUTO_TEST_CASE(returndatasize)
+{
+	BOOST_CHECK(successParse("( returndatasize )"));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }

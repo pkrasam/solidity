@@ -279,6 +279,26 @@ BOOST_AUTO_TEST_CASE(assembly_codecopy)
 	BOOST_CHECK(callFallback() == encodeArgs(string("abcdef")));
 }
 
+BOOST_AUTO_TEST_CASE(returndatasize_can_be_compiled)
+{
+	char const* sourceCode = R"(
+		(returnlll
+			(returndatasize))
+	)";
+	compileAndRun(sourceCode);
+	// TODO: test the behavior with a new version of cpp-ethereum that supports RETURNDATASIZE
+}
+
+BOOST_AUTO_TEST_CASE(returndatacopy_can_be_compiled)
+{
+	char const* sourceCode = R"(
+		(returnlll
+			(returndatacopy 0 32 64))
+	)";
+	compileAndRun(sourceCode);
+	// TODO: test the behavior with a new version of cpp-ethereum that supports RETURNDATASIZE
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
