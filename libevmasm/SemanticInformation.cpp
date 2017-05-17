@@ -156,6 +156,7 @@ bool SemanticInformation::invalidatesMemory(Instruction _instruction)
 	case Instruction::CALLDATACOPY:
 	case Instruction::CODECOPY:
 	case Instruction::EXTCODECOPY:
+	case Instruction::RETURNDATACOPY:
 	case Instruction::MSTORE:
 	case Instruction::MSTORE8:
 	case Instruction::CALL:
