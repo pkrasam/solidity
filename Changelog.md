@@ -1,5 +1,8 @@
 ### 0.4.12 (unreleased)
 
+Features:
+ * Assembly: add RETURNDATASIZE and RETURNDATACOPY instructions.
+
 ### 0.4.11 (2017-05-03)
 
 Features:
