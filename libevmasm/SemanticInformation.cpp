@@ -143,6 +143,8 @@ bool SemanticInformation::isDeterministic(AssemblyItem const& _item)
 	case Instruction::MSIZE: // depends on previous writes and reads, not only on content
 	case Instruction::BALANCE: // depends on previous calls
 	case Instruction::EXTCODESIZE:
+	case Instruction::RETURNDATACOPY: // depends on previous calls
+	case Instruction::RETURNDATASIZE:
 		return false;
 	default:
 		return true;
