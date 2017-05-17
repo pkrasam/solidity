@@ -163,11 +163,17 @@ assembly::Case Parser::parseCase(bool _defaultCase)
 {
 	assembly::Case _case = createWithLocation<assembly::Case>();
 	if (_defaultCase)
+	{
 		expectToken(Token::Default);
+		_case.isDefault = true;
+	}
 	else
 	{
 		expectToken(Token::Case);
-		_case.name = expectAsmIdentifier();
+		assembly::Statement statement = parseElementaryOperation();
+		if (statement.type() == typeid(assembly::Literal))
+			fatalParserError("Literal expected.");
+		_case.literal = boost::get<assembly::Literal>(statement);
 	}
 	expectToken(Token::Colon);
 	_case.body = parseBlock();

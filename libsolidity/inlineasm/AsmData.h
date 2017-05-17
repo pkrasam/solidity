@@ -73,7 +73,7 @@ struct Block { SourceLocation location; std::vector<Statement> statements; };
 /// Function definition ("function f(a, b) -> (d, e) { ... }")
 struct FunctionDefinition { SourceLocation location; std::string name; TypedNameList arguments; TypedNameList returns; Block body; };
 /// Switch case or default case
-struct Case { SourceLocation location; std::string name; Block body; };
+struct Case { SourceLocation location; bool isDefault; Literal value; Block body; };
 /// Switch statement
 struct Switch { SourceLocation location; Expression expression; std::vector<Case> cases; };
 
