@@ -182,10 +182,6 @@ In the grammar, opcodes are represented as pre-defined identifiers.
 +-------------------------+------+-----------------------------------------------------------------+
 | signextend(i, x)        |      | sign extend from (i*8+7)th bit counting from least significant  |
 +-------------------------+------+-----------------------------------------------------------------+
-| returndatasize          |      | size of the last return data                                    |
-+-------------------------+------+-----------------------------------------------------------------+
-| returndatacopy(t, f, s) | `*`  | copy s bytes from returndata at position f to mem at position t |
-+-------------------------+------+-----------------------------------------------------------------+
 | sha3(p, n)              |      | keccak(mem[p...(p+n)))                                          |
 +-------------------------+------+-----------------------------------------------------------------+
 | jump(label)             | `-`  | jump to label / code position                                   |
@@ -235,6 +231,10 @@ In the grammar, opcodes are represented as pre-defined identifiers.
 | extcodesize(a)          |      | size of the code at address a                                   |
 +-------------------------+------+-----------------------------------------------------------------+
 | extcodecopy(a, t, f, s) | `-`  | like codecopy(t, f, s) but take code at address a               |
++-------------------------+------+-----------------------------------------------------------------+
+| returndatasize          |      | size of the last return data                                    |
++-------------------------+------+-----------------------------------------------------------------+
+| returndatacopy(t, f, s) | `*`  | copy s bytes from returndata at position f to mem at position t |
 +-------------------------+------+-----------------------------------------------------------------+
 | create(v, p, s)         |      | create new contract with code mem[p..(p+s)) and send v wei      |
 |                         |      | and return the new address                                      |
