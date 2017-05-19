@@ -166,17 +166,14 @@ assembly::Case Parser::parseCase()
 {
 	assembly::Case _case = createWithLocation<assembly::Case>();
 	if (m_scanner->currentToken() == Token::Default)
-	{
 		m_scanner->next();
-		_case.isDefault = true;
-	}
 	else if (m_scanner->currentToken() == Token::Case)
 	{
 		m_scanner->next();
 		assembly::Statement statement = parseElementaryOperation();
 		if (statement.type() == typeid(assembly::Literal))
 			fatalParserError("Literal expected.");
-		_case.literal = boost::get<assembly::Literal>(statement);
+		_case.value = make_shared<Literal>(std::move(boost::get<assembly::Literal>(statement)));
 	} else
 		fatalParserError("Case or default case expected.");
 	_case.body = parseBlock();

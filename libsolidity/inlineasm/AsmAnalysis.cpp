@@ -276,19 +276,22 @@ bool AsmAnalyzer::operator()(assembly::FunctionCall const& _funCall)
 
 bool AsmAnalyzer::operator()(Switch const& _switch)
 {
-	map<string, bool> caseNames;
+	map<tuple<LiteralKind, string>, bool> cases;
 	for (auto const& _case: _switch.cases)
-		if (caseNames[_case.name])
+	{
+		auto val = make_tuple(_case.kind, _case.value);
+		if (cases[val])
 		{
 			m_errors.push_back(make_shared<Error>(
 				Error::Type::DeclarationError,
-				"Duplicate case defined: " + _case.name,
+				"Duplicate case defined",
 				_case.location
 				));
 			return false;
 		}
 		else
-			caseNames[_case.name] = true;
+			cases[val] = true;
+	}
 	/// TODO validate scopes and stack height
 	return false;
 }

@@ -163,10 +163,10 @@ string AsmPrinter::operator()(Switch const& _switch)
 	string out = "switch " + boost::apply_visitor(*this, _switch.expression) + "\n";
 	for (auto const& _case: _switch.cases)
 	{
-		if (_case.isDefault)
+		if (!_case.value)
 			out += "default: ";
 		else
-			out += "case " + boost::apply_visitor(*this, _case.literal) + ": ";
+			out += "case " + boost::apply_visitor(*this, *_case.value) + ": ";
 		out += (*this)(_case.body) + "\n";
 	}
 	return out;
