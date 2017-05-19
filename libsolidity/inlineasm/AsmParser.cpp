@@ -73,14 +73,7 @@ assembly::Statement Parser::parseStatement()
 			break;
 		assembly::Switch switchcase = createWithLocation<assembly::Switch>();
 		m_scanner->next();
-		assembly::Statement statement = parseExpression();
-		if (statement.type() == typeid(assembly::FunctionCall))
-			switchcase.expression = boost::get<assembly::FunctionCall>(statement);
-		if (statement.type() == typeid(assembly::Identifier))
-			switchcase.expression = boost::get<assembly::Identifier>(statement);
-		if (statement.type() == typeid(assembly::Literal))
-			switchcase.expression = boost::get<assembly::Literal>(statement);
-//		switchcase.expression = parseExpression();
+		switchcase.expression = make_shared<Statement>(parseExpression());
 		do
 		{
 			expectToken(Token::Case);

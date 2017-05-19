@@ -59,7 +59,6 @@ struct Switch;
 struct FunctionCall;
 struct Block;
 using Statement = boost::variant<Instruction, Literal, Label, Assignment, Identifier, FunctionalAssignment, FunctionCall, FunctionalInstruction, VariableDeclaration, FunctionDefinition, Switch, Block>;
-using Expression = boost::variant<FunctionCall, Identifier, Literal>;
 /// Functional assignment ("x := mload(20:u256)", expects push-1-expression on the right hand
 /// side and requires x to occupy exactly one stack slot.
 struct FunctionalAssignment { SourceLocation location; Identifier variableName; std::shared_ptr<Statement> value; };
@@ -75,7 +74,7 @@ struct FunctionDefinition { SourceLocation location; std::string name; TypedName
 /// Switch case or default case
 struct Case { SourceLocation location; std::shared_ptr<Literal> value; Block body; };
 /// Switch statement
-struct Switch { SourceLocation location; Expression expression; std::vector<Case> cases; };
+struct Switch { SourceLocation location; std::shared_ptr<Statement> expression; std::vector<Case> cases; };
 
 struct LocationExtractor: boost::static_visitor<SourceLocation>
 {
