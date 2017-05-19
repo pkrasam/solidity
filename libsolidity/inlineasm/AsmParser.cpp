@@ -81,8 +81,11 @@ assembly::Statement Parser::parseStatement()
 		if (statement.type() == typeid(assembly::Literal))
 			switchcase.expression = boost::get<assembly::Literal>(statement);
 //		switchcase.expression = parseExpression();
-		while (m_scanner->currentToken() == Token::Case)
+		do
+		{
+			expectToken(Token::Case);
 			switchcase.cases.emplace_back(parseCase());
+		} while (m_scanner->currentToken() == Token::Case);
 		if (m_scanner->currentToken() == Token::Default)
 			switchcase.cases.emplace_back(parseCase());
 		if (switchcase.cases.size() == 0)
