@@ -279,6 +279,9 @@ bool AsmAnalyzer::operator()(Switch const& _switch)
 	set<tuple<LiteralKind, string>> cases;
 	for (auto const& _case: _switch.cases)
 	{
+		if (!boost:apply_visitor(*this, _case.body))
+			return false;
+
 		auto val = make_tuple(_case.kind, _case.value);
 		if (cases.count(val))
 		{
