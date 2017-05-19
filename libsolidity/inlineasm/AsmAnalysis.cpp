@@ -276,11 +276,13 @@ bool AsmAnalyzer::operator()(assembly::FunctionCall const& _funCall)
 
 bool AsmAnalyzer::operator()(Switch const& _switch)
 {
+	bool success = true;
 	set<tuple<LiteralKind, string>> cases;
+
 	for (auto const& _case: _switch.cases)
 	{
 		if (!boost:apply_visitor(*this, _case.body))
-			return false;
+			success = false;
 
 		auto val = make_tuple(_case.kind, _case.value);
 		if (cases.count(val))
@@ -290,7 +292,7 @@ bool AsmAnalyzer::operator()(Switch const& _switch)
 				"Duplicate case defined",
 				_case.location
 				));
-			return false;
+			success = false;
 		}
 		else
 			cases.insert(val);
@@ -298,11 +300,10 @@ bool AsmAnalyzer::operator()(Switch const& _switch)
 
 	int const initialStackHeight = m_stackHeight;
 	if (!boost::apply_visitor(*this, _switch.expression))
-		return false;
+		success = false;
 	expectDeposit(1, initialStackHeight, _switch.expression.location);
 
-	/// TODO validate scopes and stack height
-	return true;
+	return success;
 }
 
 bool AsmAnalyzer::operator()(Block const& _block)
