@@ -276,11 +276,11 @@ bool AsmAnalyzer::operator()(assembly::FunctionCall const& _funCall)
 
 bool AsmAnalyzer::operator()(Switch const& _switch)
 {
-	map<tuple<LiteralKind, string>, bool> cases;
+	set<tuple<LiteralKind, string>> cases;
 	for (auto const& _case: _switch.cases)
 	{
 		auto val = make_tuple(_case.kind, _case.value);
-		if (cases[val])
+		if (cases.count(val))
 		{
 			m_errors.push_back(make_shared<Error>(
 				Error::Type::DeclarationError,
@@ -290,10 +290,10 @@ bool AsmAnalyzer::operator()(Switch const& _switch)
 			return false;
 		}
 		else
-			cases[val] = true;
+			cases.insert(val);
 	}
 	/// TODO validate scopes and stack height
-	return false;
+	return true;
 }
 
 bool AsmAnalyzer::operator()(Block const& _block)
