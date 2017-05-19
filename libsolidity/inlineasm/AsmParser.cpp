@@ -84,7 +84,7 @@ assembly::Statement Parser::parseStatement()
 		while (m_scanner->currentToken() == Token::Case)
 			switchcase.cases.emplace_back(parseCase());
 		if (m_scanner->currentToken() == Token::Default)
-			switchcase.cases.emplace_back(parseCase(true));
+			switchcase.cases.emplace_back(parseCase());
 		if (switchcase.cases.size() == 0)
 			fatalParserError("Switch statement without any cases.");
 		/// TODO: take endlocation form last switch case
@@ -159,22 +159,23 @@ assembly::Statement Parser::parseStatement()
 	return statement;
 }
 
-assembly::Case Parser::parseCase(bool _defaultCase)
+assembly::Case Parser::parseCase()
 {
 	assembly::Case _case = createWithLocation<assembly::Case>();
-	if (_defaultCase)
+	if (m_scanner->currentToken() == Token::Default)
 	{
-		expectToken(Token::Default);
+		m_scanner->next();
 		_case.isDefault = true;
 	}
-	else
+	else if (m_scanner->currentToken() == Token::Case)
 	{
-		expectToken(Token::Case);
+		m_scanner->next();
 		assembly::Statement statement = parseElementaryOperation();
 		if (statement.type() == typeid(assembly::Literal))
 			fatalParserError("Literal expected.");
 		_case.literal = boost::get<assembly::Literal>(statement);
-	}
+	} else
+		fatalParserError("Case or default case expected.");
 	_case.body = parseBlock();
 	_case.location.end = _case.body.location.end;
 	return _case;
