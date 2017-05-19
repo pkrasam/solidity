@@ -292,6 +292,12 @@ bool AsmAnalyzer::operator()(Switch const& _switch)
 		else
 			cases.insert(val);
 	}
+
+	int const initialStackHeight = m_stackHeight;
+	if (!boost::apply_visitor(*this, _switch.expression))
+		return false;
+	expectDeposit(1, initialStackHeight, _switch.expression.location);
+
 	/// TODO validate scopes and stack height
 	return true;
 }
